@@ -142,14 +142,16 @@ const statusResp = (res, _code, _resp) => {
 };
 
 app.get("/", async (req, res) => {
-  statusResp(res, 200, { message: "running" });
+  console.log("mufetch");
   const urlsupa = await fetchCount();
   console.log(urlsupa);
   if (!urlsupa[0].url) {
     await main(process.env.URL_ORIGIN);
+    statusResp(res, 200, { message: "running init" });
   } else {
     console.log("fetching..");
     await main(urlsupa[0].url);
+    statusResp(res, 200, { message: "running" });
   }
 });
 
