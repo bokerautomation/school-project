@@ -143,12 +143,13 @@ const statusResp = (res, _code, _resp) => {
 
 app.get("/", async (req, res) => {
   statusResp(res, 200, { message: "running" });
-  const { url } = await fetchCount();
-  if (!url) {
+  const urlsupa = await fetchCount();
+  console.log(urlsupa);
+  if (!urlsupa[0].url) {
     await main(process.env.URL_ORIGIN);
   } else {
     console.log("fetching..");
-    await main(url);
+    await main(urlsupa[0].url);
   }
 });
 
