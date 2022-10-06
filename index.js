@@ -11,6 +11,7 @@ const client = new NFTStorage({ token: process.env.IPFS_STORAGE });
 
 const fetchCount = async () => {
   const { data, error } = await db.from("count").select("*").match({ id: 1 });
+  console.log({ data });
   if (error) {
     console.log("error fetch count");
   } else {
@@ -19,6 +20,7 @@ const fetchCount = async () => {
 };
 
 async function getExampleImage(_original) {
+  console.log("exampleBlob");
   const r = await fetch(_original);
   const blobFile = await r.blob();
   if (!r.ok) {
@@ -55,7 +57,7 @@ async function upload(_detail) {
   } = _detail;
   try {
     const cid = await getExampleImage(original_image);
-
+    console.log({ cid });
     const { data, error } = await db.from("animedb").insert({
       ipfslink: `ipfs://${cid}`,
       id,
@@ -94,6 +96,7 @@ async function fetchRes(_url) {
 async function main(_url) {
   try {
     const { next, results } = await fetchRes(_url);
+    console.log({ next });
     if (!next) {
       console.log("finish");
     } else {
@@ -144,6 +147,7 @@ app.get("/", async (req, res) => {
   if (!url) {
     await main(process.env.URL_ORIGIN);
   } else {
+    console.log("fetching..");
     await main(url);
   }
 });
