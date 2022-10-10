@@ -1,8 +1,9 @@
-const axios = require("axios");
-const { NFTStorage } = require("nft.storage");
-const { createClient } = require("@supabase/supabase-js");
-const express = require("express");
-require("dotenv").config();
+import axios from "axios";
+import { NFTStorage } from "nft.storage";
+import { createClient } from "@supabase/supabase-js";
+import express from "express";
+import * as dotenv from "dotenv";
+dotenv.config();
 
 const app = express();
 
@@ -35,7 +36,7 @@ async function getExampleImage(_original) {
 async function catchErr() {
   const { data, error: errors } = await db
     .from("count")
-    .upsert({ running: false })
+    .update({ running: false })
     .match({ id: 1 });
   if (errors) {
     console.log("error upsert", errors);
@@ -103,7 +104,7 @@ async function main(_url) {
       await getArr(results);
       const { data, error } = await db
         .from("count")
-        .upsert({ running: true, url: next })
+        .update({ running: true, url: next })
         .match({ id: 1 });
       if (error) {
         console.log("error upsert", error);
